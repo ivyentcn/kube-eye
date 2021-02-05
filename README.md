@@ -13,7 +13,7 @@ Note that in the current version, in order to provide log retrieval services, ku
 
 ## 2. Prerequisites
 - Confirm that kubectl has been installed and configured locally.
-- Ensure that at least two nodes in the cluster have free memory greater than 3GB.
+- Ensure that the available memory of at least one node in the cluster is greater than 3GB.
 
 ## 3. Public IP installation method
 This installation method is suitable for deploying kube-eye in cloud providers, such as AKS, EKS, GKS, etc. During the installation process, a public IP will be applied to the cloud provider to access the kube-eye service, which may incur additional costs.
@@ -31,7 +31,6 @@ Next, wait for all Pods to reach the Running state, use the following command to
 kubectl -n kube-eye get pods
 NAME                        READY   STATUS    RESTARTS   AGE
 elasticsearch-logging-0     1/1     Running   0          1m46s
-elasticsearch-logging-1     1/1     Running   0          1m30s
 fluentd-es-v3.1.0-2js9n     1/1     Running   0          1m46s
 fluentd-es-v3.1.0-7mqj7     1/1     Running   0          1m46s
 kube-eye-7b97c8d7c5-6f6fr   1/1     Running   0          1m45s
@@ -65,7 +64,6 @@ Next, wait for all Pods to reach the Running state, use the following command to
 kubectl -n kube-eye get pods
 NAME                        READY   STATUS    RESTARTS   AGE
 elasticsearch-logging-0     1/1     Running   0          1m46s
-elasticsearch-logging-1     1/1     Running   0          1m30s
 fluentd-es-v3.1.0-2js9n     1/1     Running   0          1m46s
 fluentd-es-v3.1.0-7mqj7     1/1     Running   0          1m46s
 kube-eye-7b97c8d7c5-6f6fr   1/1     Running   0          1m45s

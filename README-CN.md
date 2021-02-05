@@ -14,7 +14,7 @@ kube-eye中目前包含以及将来可能加入的功能清单如下：
 
 ## 2. 前提条件
 - 确认本地已经安装并配置kubectl。
-- 确保集群中至少有两个节点的可用内存大于3GB。
+- 确保集群中至少有一个节点的可用内存大于3GB。
 
 ## 3. 公网IP安装方式
 该安装方式适用于在云提供商中部署kube-eye，例如：AKS、EKS、GKS等。安装过程中将会向云提供商申请一个公网IP，以便访问kube-eye服务，这可能产生额外的费用。
@@ -32,7 +32,6 @@ kubectl create -f http://cdn.jsdelivr.net/gh/ivyentcn/ivyentcn.github.io/kube-ey
 kubectl -n kube-eye get pods
 NAME                        READY   STATUS    RESTARTS   AGE
 elasticsearch-logging-0     1/1     Running   0          1m46s
-elasticsearch-logging-1     1/1     Running   0          1m30s
 fluentd-es-v3.1.0-2js9n     1/1     Running   0          1m46s
 fluentd-es-v3.1.0-7mqj7     1/1     Running   0          1m46s
 kube-eye-7b97c8d7c5-6f6fr   1/1     Running   0          1m45s
@@ -66,7 +65,6 @@ kubectl create -f http://cdn.jsdelivr.net/gh/ivyentcn/ivyentcn.github.io/kube-ey
 kubectl -n kube-eye get pods
 NAME                        READY   STATUS    RESTARTS   AGE
 elasticsearch-logging-0     1/1     Running   0          1m46s
-elasticsearch-logging-1     1/1     Running   0          1m30s
 fluentd-es-v3.1.0-2js9n     1/1     Running   0          1m46s
 fluentd-es-v3.1.0-7mqj7     1/1     Running   0          1m46s
 kube-eye-7b97c8d7c5-6f6fr   1/1     Running   0          1m45s

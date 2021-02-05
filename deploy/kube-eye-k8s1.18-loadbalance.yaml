@@ -104,7 +104,7 @@ metadata:
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   serviceName: elasticsearch-logging-inner
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       k8s-app: elasticsearch-logging
@@ -154,7 +154,7 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: "MASTER_NODES"
-          value: "2"
+          value: "1"
       volumes:
       - name: elasticsearch-logging
         emptyDir: {}
