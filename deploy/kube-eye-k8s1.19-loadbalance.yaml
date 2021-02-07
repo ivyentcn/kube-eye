@@ -795,7 +795,7 @@ rules:
   resources:
   - "namespaces"
   - "pods"
-  - "logs"
+  - "pods/log"
   - "nodes"
   verbs:
   - "get"
