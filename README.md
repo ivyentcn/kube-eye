@@ -1,4 +1,3 @@
-English | [简体中文](README-CN.md)
 ## 1. What is kube-eye
 Kube-eye is an auxiliary tool specially designed for the kubernetes platform, providing a variety of practical functions to help you quickly locate problems in the cluster.
 
