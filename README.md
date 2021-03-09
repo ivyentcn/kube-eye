@@ -4,9 +4,8 @@ Kube-eye is an auxiliary tool specially designed for the kubernetes platform, pr
 The list of functions currently included in kube-eye and that may be added in the future is as follows:
 - Collect all Pod logs in the cluster and provide full-text search function.
 - View the real-time log of the specified container, and support search word highlighting.
-- Use [KubeBench](https://github.com/aquasecurity/kube-bench) to perform a security scan on the cluster nodes and give repair suggestions.
-- Use [DockerBench](https://hub.docker.com/r/docker/docker-bench-security) to perform a CIS benchmark scan of Docker containers on cluster nodes. (To be added)
-- Use [Clair](https://coreos.com/clair) to analyze the vulnerabilities of the containers in the cluster. (To be added)
+- Based on the CIS Kubernetes standard, scan the cluster nodes and give repair suggestions.
+- Based on the security vulnerability database disclosed by each Linux distribution, scan all software packages in the mirror for possible security vulnerabilities.
 
 Note that in the current version, in order to provide log retrieval services, kube-eye will temporarily store Pod logs, but it does not guarantee that the logs can be stored permanently. When you delete or redeploy kube-eye, the previously stored logs will also be cleared . Therefore, if you need to permanently store some Pod logs, you may need to find other solutions. In subsequent versions, we have plans to support permanent storage of logs, as well as data import and export functions.
 
@@ -28,11 +27,13 @@ kubectl create -f http://cdn.jsdelivr.net/gh/ivyentcn/ivyentcn.github.io/kube-ey
 Next, wait for all Pods to reach the Running state, use the following command to view the Pod state, if everything goes well, you will see output similar to the following.
 ```
 kubectl -n kube-eye get pods
-NAME                        READY   STATUS    RESTARTS   AGE
-elasticsearch-logging-0     1/1     Running   0          1m46s
-fluentd-es-v3.1.0-2js9n     1/1     Running   0          1m46s
-fluentd-es-v3.1.0-7mqj7     1/1     Running   0          1m46s
-kube-eye-7b97c8d7c5-6f6fr   1/1     Running   0          1m45s
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/elasticsearch-logging-0       1/1     Running   0          1m30s
+pod/fluentd-es-v3.1.0-gvsqj       1/1     Running   0          1m20s
+pod/fluentd-es-v3.1.0-nwxfl       1/1     Running   0          1m20s
+pod/kube-eye-5dd6779f4f-7974w     1/1     Running   0          1m30s
+pod/kube-eye-worker-6gsvq         1/1     Running   0          1m33s
+pod/kube-eye-worker-x5bwk         1/1     Running   0          1m33s
 ```
 
 ### 3.3 Visit kube-eye
@@ -61,11 +62,13 @@ kubectl create -f http://cdn.jsdelivr.net/gh/ivyentcn/ivyentcn.github.io/kube-ey
 Next, wait for all Pods to reach the Running state, use the following command to view the Pod state, if everything goes well, you will see output similar to the following.
 ```
 kubectl -n kube-eye get pods
-NAME                        READY   STATUS    RESTARTS   AGE
-elasticsearch-logging-0     1/1     Running   0          1m46s
-fluentd-es-v3.1.0-2js9n     1/1     Running   0          1m46s
-fluentd-es-v3.1.0-7mqj7     1/1     Running   0          1m46s
-kube-eye-7b97c8d7c5-6f6fr   1/1     Running   0          1m45s
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/elasticsearch-logging-0       1/1     Running   0          1m30s
+pod/fluentd-es-v3.1.0-gvsqj       1/1     Running   0          1m20s
+pod/fluentd-es-v3.1.0-nwxfl       1/1     Running   0          1m20s
+pod/kube-eye-5dd6779f4f-7974w     1/1     Running   0          1m30s
+pod/kube-eye-worker-6gsvq         1/1     Running   0          1m33s
+pod/kube-eye-worker-x5bwk         1/1     Running   0          1m33s
 ```
 
 ### 4.3 Create Entry

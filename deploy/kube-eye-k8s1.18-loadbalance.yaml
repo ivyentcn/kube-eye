@@ -722,10 +722,10 @@ spec:
           value: --no-supervisor -q
         resources:
           limits:
-            memory: 500Mi
+            memory: 800Mi
           requests:
             cpu: 100m
-            memory: 200Mi
+            memory: 300Mi
         volumeMounts:
         - name: varlog
           mountPath: /var/log
@@ -794,6 +794,14 @@ rules:
   - "pods"
   - "pods/log"
   - "nodes"
+  verbs:
+  - "get"
+  - "watch"
+  - "list"
+- apiGroups:
+  - "apps"
+  resources:
+  - "daemonsets"
   verbs:
   - "get"
   - "watch"
@@ -872,8 +880,8 @@ spec:
       serviceAccountName: kube-eye
       containers:
       - name: kube-eye
-        image: ivyent/kube-eye:1.1.0
-        args: ["--es-address", "http://elasticsearch-logging:9200", "--log-level", "6"]
+        image: ivyent/kube-eye:0.2.0
+        args: ["--es-address", "http://elasticsearch-logging:9200", "--log-level", "4"]
         imagePullPolicy: Always
         resources:
           limits:
@@ -881,6 +889,96 @@ spec:
             memory: 100Mi
           requests:
             cpu: 50m
-            memory: 50Mi
+            memory: 80Mi
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: kube-eye-data
+          mountPath: /opt/kube-eye/data
+      volumes:
+      - name: kube-eye-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: kube-eye-worker
+  namespace: kube-eye
+  labels:
+    kube-eye-app: kube-eye-worker
+spec:
+  selector:
+    matchLabels:
+      kube-eye-app: kube-eye-worker
+  template:
+    metadata:
+      labels:
+        kube-eye-app: kube-eye-worker
+    spec:
+      priorityClassName: system-node-critical
+      serviceAccountName: kube-eye
+      containers:
+      - name: kube-eye
+        image: ivyent/kube-eye-worker:0.2.0
+        args: ["--server-address", "http://kube-eye:80", "--log-level", "4"]
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 500m
+            memory: 800Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+        ports:
+        - containerPort: 80
+          name: restapi
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: restapi
+          initialDelaySeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: restapi
+          initialDelaySeconds: 5
+          timeoutSeconds: 10
+        volumeMounts:
+        - name: docker-client
+          mountPath: /usr/bin/docker
+          readOnly: true
+        - name: crictl
+          mountPath: /usr/bin/crictl
+          readOnly: true
+        - name: crictl-config
+          mountPath: /etc/crictl.yaml
+          readOnly: true
+        - name: containerd-config
+          mountPath: /etc/containerd/config.toml
+          readOnly: true
+        - name: containerd-sock
+          mountPath: /run/containerd/containerd.sock
+          readOnly: true
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+          readOnly: true
+      volumes:
+      - name: docker-client
+        hostPath:
+          path: /usr/bin/docker
+      - name: crictl
+        hostPath:
+          path: /usr/bin/crictl
+      - name: crictl-config
+        hostPath:
+          path: /etc/crictl.yaml
+      - name: containerd-config
+        hostPath:
+          path: /etc/containerd/config.toml
+      - name: containerd-sock
+        hostPath:
+          path: /run/containerd/containerd.sock
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
+      terminationGracePeriodSeconds: 5
