@@ -1,11 +1,13 @@
 ## 1. What is kube-eye
 Kube-eye is an auxiliary tool specially designed for the kubernetes platform, providing a variety of practical functions to help you quickly locate problems in the cluster.
 
-The list of functions currently included in kube-eye and that may be added in the future is as follows:
+The list of functions currently included in kube-eye is as follows:
 - Collect all Pod logs in the cluster and provide full-text search function.
 - View the real-time log of the specified container, and support search word highlighting.
 - Based on the CIS Kubernetes standard, scan the cluster nodes and give repair suggestions.
 - Based on the security vulnerability database disclosed by each Linux distribution, scan all software packages in the mirror for possible security vulnerabilities.
+
+![](doc/architecture.png)
 
 Note that in the current version, in order to provide log retrieval services, kube-eye will temporarily store Pod logs, but it does not guarantee that the logs can be stored permanently. When you delete or redeploy kube-eye, the previously stored logs will also be cleared . Therefore, if you need to permanently store some Pod logs, you may need to find other solutions. In subsequent versions, we have plans to support permanent storage of logs, as well as data import and export functions.
 
