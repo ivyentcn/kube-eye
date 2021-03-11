@@ -16,7 +16,7 @@ Note that in the current version, in order to provide log retrieval services, ku
 - Ensure that the available memory of at least one node in the cluster is greater than 3GB.
 
 ## 3. Public IP installation method
-This installation method is suitable for deploying kube-eye in cloud providers, such as AKS, EKS, GKS, etc. During the installation process, a public IP will be applied to the cloud provider to access the kube-eye service, which may incur additional costs.
+This installation method is suitable for deploying kube-eye in cloud providers, such as AKS, EKS, GKE, etc. During the installation process, a public IP will be applied to the cloud provider to access the kube-eye service, which may incur additional costs.
 
 ### 3.1 Install kube-eye
 Open your local terminal window and execute the following command to install kube-eye.
