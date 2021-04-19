@@ -924,6 +924,15 @@ spec:
         image: ivyent/kube-eye-worker:latest
         args: ["--server-address", "http://kube-eye:80", "--log-level", "4"]
         imagePullPolicy: Always
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         resources:
           limits:
             cpu: 100m
