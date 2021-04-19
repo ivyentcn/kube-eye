@@ -16,7 +16,7 @@ Note that in the current version, in order to provide log retrieval services, ku
 - Ensure that the available memory of at least one node in the cluster is greater than 3GB.
 
 ## 3. Public IP installation method
-This installation method is suitable for deploying kube-eye in cloud providers, such as AKS, EKS, GKS, etc. During the installation process, a public IP will be applied to the cloud provider to access the kube-eye service, which may incur additional costs.
+This installation method is suitable for deploying kube-eye in cloud providers, such as AKS, EKS, GKE, etc. During the installation process, a public IP will be applied to the cloud provider to access the kube-eye service, which may incur additional costs.
 
 ### 3.1 Install kube-eye
 Open your local terminal window and execute the following command to install kube-eye.
@@ -74,9 +74,9 @@ pod/kube-eye-worker-x5bwk         1/1     Running   0          1m33s
 ```
 
 ### 4.3 Create Entry
-Finally, create an [Ingress resource](https://kubernetes.io/en/docs/concepts/services-networking/ingress/#the-ingress-resource) to access kube-eye, you may need to add the `in the following template kubeeye.k8s.local` is modified to your own domain name. Then execute it.
+Finally, create an [Ingress resource](https://kubernetes.io/en/docs/concepts/services-networking/ingress/#the-ingress-resource) to access kube-eye. Note that you may need to change `kubeeye.k8s.local` in the following template to your own domain name. Then execute it.
 
-Applicable to `1.18` or earlier k8s:
+Applicable to `1.18` or earlier version of kubernetes:
 ```
 kubectl create -f - <<< '
 apiVersion: extensions/v1beta1
@@ -98,7 +98,7 @@ spec:
 '
 ```
 
-Applicable to `1.19` or newer k8s:
+Applicable to `1.19` or newer version of kubernetes:
 ```
 kubectl create -f - <<< '
 apiVersion: networking.k8s.io/v1
