@@ -1,32 +1,34 @@
-## 1. What is kube-eye
-Kube-eye is an auxiliary tool specially designed for the kubernetes platform, providing a variety of practical functions to help you quickly locate problems in the cluster.
+[English](README-EN.md) | 简体中文
 
-The list of functions currently included in kube-eye is as follows:
-- Collect all Pod logs in the cluster and provide full-text search function.
-- View the real-time log of the specified container, and support search word highlighting.
-- Based on the CIS Kubernetes standard, scan the cluster nodes and give repair suggestions.
-- Based on the security vulnerability database disclosed by each Linux distribution, scan all software packages in the mirror for possible security vulnerabilities.
+## 1. 什么是kube-eye
+kube-eye是一个专门为kubernetes平台设计的辅助工具，提供多种实用功能帮助您快速定位集群中的问题。
+
+kube-eye中目前包含的功能清单如下：
+- 收集集群内所有Pod日志，并提供全文搜索功能。
+- 查看指定容器的实时日志，并支持搜索词高亮。
+- 基于CIS Kubernetes标准，扫描集群节点，并给出修复建议。
+- 基于各Linux发行版公开的安全漏洞数据库，扫描镜像中所有软件包可能存在的安全漏洞。
 
 ![](doc/architecture.png)
 
-Note that in the current version, in order to provide log retrieval services, kube-eye will temporarily store Pod logs, but it does not guarantee that the logs can be stored permanently. When you delete or redeploy kube-eye, the previously stored logs will also be cleared . Therefore, if you need to permanently store some Pod logs, you may need to find other solutions. In subsequent versions, we have plans to support permanent storage of logs, as well as data import and export functions.
+注意，在当前版本中，为了提供日志检索服务，kube-eye会临时存储Pod日志，但不保证日志可以被永久存储，在您删除或重新部署kube-eye时，之前存储的日志也将被清空。因此，如果您需要永久存储某些Pod日志，可能需要寻找其他方案。在后续版本中，我们有计划支持日志的永久存储，以及数据的导入导出功能。
 
-## 2. Prerequisites
-- Confirm that kubectl has been installed and configured locally.
-- Ensure that the available memory of at least one node in the cluster is greater than 3GB.
+## 2. 前提条件
+- 确认本地已经安装并配置kubectl。
+- 确保集群中至少有一个节点的可用内存大于3GB。
 
-## 3. Public IP installation method
-This installation method is suitable for deploying kube-eye in cloud providers, such as AKS, EKS, GKE, etc. During the installation process, a public IP will be applied to the cloud provider to access the kube-eye service, which may incur additional costs.
+## 3. 公网IP安装方式
+该安装方式适用于在云提供商中部署kube-eye，例如：AKS、EKS、GKS等。安装过程中将会向云提供商申请一个公网IP，以便访问kube-eye服务，这可能产生额外的费用。
 
-### 3.1 Install kube-eye
-Open your local terminal window and execute the following command to install kube-eye.
+### 3.1 安装kube-eye
+打开您的本地终端窗口，执行以下命令来安装kube-eye。
 ```
 kubectl create ns kube-eye
 kubectl create -f http://cdn.jsdelivr.net/gh/ivyentcn/ivyentcn.github.io/kube-eye/deploy/kube-eye-k8s1.18-loadbalance.yaml
 ```
 
-### 3.2 Check the installation status
-Next, wait for all Pods to reach the Running state, use the following command to view the Pod state, if everything goes well, you will see output similar to the following.
+### 3.2 检查安装状态
+接下来等待所有Pod到达Running状态，使用以下命令查看Pod状态，如果一切顺利，将看到类似下列输出。
 ```
 kubectl -n kube-eye get pods
 NAME                              READY   STATUS    RESTARTS   AGE
@@ -38,8 +40,8 @@ pod/kube-eye-worker-6gsvq         1/1     Running   0          1m33s
 pod/kube-eye-worker-x5bwk         1/1     Running   0          1m33s
 ```
 
-### 3.3 Visit kube-eye
-Execute the following command, and find the external IP of kube-eye in the output, which is `10.100.100.100` in the following example.
+### 3.3 访问kube-eye
+执行以下命令，并在输出中找到kube-eye的外部IP，在以下实例中为`10.100.100.100`。
 ```
 kubectl -n kube-eye get svc
 NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)             AGE
@@ -48,20 +50,20 @@ elasticsearch-logging         ClusterIP      10.0.251.238   <none>           920
 elasticsearch-logging-inner   ClusterIP      None           <none>           9200/TCP,9300/TCP   1m
 ```
 
-Now you can access the kube-eye page from your browser: `http://10.100.100.100`
+现在您可以从浏览器中访问kube-eye页面：`http://10.100.100.100`
 
-## 4. Ingress installation method
-If you have deployed [Ingress Controller](https://kubernetes.io/en/docs/concepts/services-networking/ingress-controllers) in your cluster, you do not need to assign a public IP for kube-eye separately.
+## 4. Ingress安装方式
+如果您的集群中部署了[Ingress控制器](https://kubernetes.io/zh/docs/concepts/services-networking/ingress-controllers)，则无需单独为kube-eye分配公网IP。
 
-### 4.1 Install kube-eye
-Open your local terminal window and execute the following command to install kube-eye.
+### 4.1 安装kube-eye
+打开您的本地终端窗口，执行以下命令来安装kube-eye。
 ```
 kubectl create ns kube-eye
 kubectl create -f http://cdn.jsdelivr.net/gh/ivyentcn/ivyentcn.github.io/kube-eye/deploy/kube-eye-k8s1.18-ingress.yaml
 ```
 
-### 4.2 Check the installation status
-Next, wait for all Pods to reach the Running state, use the following command to view the Pod state, if everything goes well, you will see output similar to the following.
+### 4.2 检查安装状态
+接下来等待所有Pod到达Running状态，使用以下命令查看Pod状态，如果一切顺利，将看到类似下列输出。
 ```
 kubectl -n kube-eye get pods
 NAME                              READY   STATUS    RESTARTS   AGE
@@ -73,10 +75,10 @@ pod/kube-eye-worker-6gsvq         1/1     Running   0          1m33s
 pod/kube-eye-worker-x5bwk         1/1     Running   0          1m33s
 ```
 
-### 4.3 Create Entry
-Finally, create an [Ingress resource](https://kubernetes.io/en/docs/concepts/services-networking/ingress/#the-ingress-resource) to access kube-eye. Note that you may need to change `kubeeye.k8s.local` in the following template to your own domain name. Then execute it.
+### 4.3 创建入口
+最后创建一个[Ingress资源](https://kubernetes.io/zh/docs/concepts/services-networking/ingress/#the-ingress-resource)以便访问kube-eye，您可能需要将以下模板中的`kubeeye.k8s.local`修改为您自己的域名。然后执行它。
 
-Applicable to `1.18` or earlier version of kubernetes:
+适用于`1.18`或更早的k8s：
 ```
 kubectl create -f - <<< '
 apiVersion: extensions/v1beta1
@@ -98,7 +100,7 @@ spec:
 '
 ```
 
-Applicable to `1.19` or newer version of kubernetes:
+适用于`1.19`或更新的k8s：
 ```
 kubectl create -f - <<< '
 apiVersion: networking.k8s.io/v1
@@ -123,15 +125,15 @@ spec:
 '
 ```
 
-## 5. Uninstall kube-eye
-### 5.1 Delete all components of kube-eye
+## 5. 卸载kube-eye
+### 5.1 删除kube-eye所有组件
 ```
 kubectl delete -f http://cdn.jsdelivr.net/gh/ivyentcn/ivyentcn.github.io/kube-eye/deploy/kube-eye-k8s1.18-loadbalance.yaml
 kubectl -n kube-eye delete ingress/kube-eye
 ```
 
-### 5.2 Delete namespace
-Finally, you can choose to delete the `kube-eye` namespace. Please make sure that there are no other resources in the namespace before deleting.
+### 5.2 删除命名空间
+最后您可以选择删除`kube-eye`命名空间，删除前请确认该命名空间内没有其他资源。
 ```
 kubectl delete ns kube-eye
 ```
